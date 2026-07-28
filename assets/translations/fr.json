@@ -1,0 +1,295 @@
+{
+    
+  "good_morning": "Bonjour",
+  "how_are_you_feeling_today": "Comment vous sentez-vous aujourd'hui ?",
+  "start_a_conversation": "Commencer une conversation",
+  "talk_to_naya": "Parler à Naya",
+  "recent_conversations": "Vos conversations récentes",
+
+  "welcome": "Bienvenue sur Naya",
+  "question": "Comment souhaitez-vous que Naya vous appelle ?",
+  "nickname": "Entrez un surnom",
+  "language": "Langue préférée",
+  "continue": "Continuer",
+  "skip": "Passer pour le moment",
+  "privacy": "Votre confidentialité est importante pour Naya 💜",
+
+  "home": "Accueil",
+  "history": "Historique",
+  "insights": "Analyses",
+  "settings": "Paramètres",
+
+  "settings_title": "Paramètres",
+
+  "privacy_message": "Vos conversations restent privées avec Naya",
+
+  "create_account": "Créer un compte",
+
+  "create_account_description": "Personnalisez Naya, sauvegardez votre historique, synchronisez vos préférences et faites de Naya votre véritable compagnon.",
+
+  "email": "E-mail",
+
+  "google": "Google",
+
+  "conversation_history": "Historique des conversations",
+
+  "voice_preferences": "Préférences vocales",
+
+  "logout": "Déconnexion",
+
+  "voice_personality": "Voix et personnalité",
+
+  "voice": "Voix",
+
+  "choose_voice": "Choisir la voix de Naya",
+
+  "calm_female": "Voix féminine calme",
+
+  "soft_comforting": "Douce et rassurante",
+
+  "friendly_female": "Voix féminine amicale",
+
+  "warm_cheerful": "Chaleureuse et joyeuse",
+
+  "gentle_male": "Voix masculine douce",
+
+  "relaxed_supportive": "Calme et encourageante",
+
+  "personality": "Personnalité",
+
+  "choose_personality": "Choisir la personnalité de Naya",
+
+  "calm": "Calme",
+
+  "calm_description": "Douce et émotionnellement rassurante",
+
+  "friendly": "Amicale",
+
+  "friendly_description": "Conversations chaleureuses et agréables",
+
+  "motivational": "Motivante",
+
+  "motivational_description": "Énergique et inspirante",
+
+  "reminders": "Rappels",
+
+  "daily_checkin": "Suivi quotidien",
+
+  "reminder_time": "Heure du rappel",
+
+  "preferences": "Préférences",
+
+  "dark_mode": "Mode sombre",
+
+  "language_setting": "Langue",
+
+  "privacy_data": "Confidentialité et données",
+
+  "create_your_account": "Créer votre compte",
+
+  "save_conversations": "Sauvegardez vos conversations, synchronisez vos préférences et personnalisez Naya.",
+
+  "nickname_setting": "Surnom",
+
+  "email_address": "Adresse e-mail",
+
+  "create_password": "Créer un mot de passe",
+
+  "create_account_button": "Créer un compte",
+
+  "maybe_later": "Plus tard",
+
+  "check_email": "Vérifiez votre e-mail pour confirmer votre compte.",
+
+  "my_memories": "Mes souvenirs",
+  "every_conversation_step_forward": "Chaque conversation est un pas en avant.",
+
+  "search_conversations": "Rechercher des conversations...",
+
+  "all": "Tout",
+  "today": "Aujourd'hui",
+  "this_week": "Cette semaine",
+  "this_month": "Ce mois-ci",
+
+  "new_conversation": "Nouvelle conversation",
+
+  "messages": "messages",
+  "message": "message",
+
+  "no_conversations": "Aucune conversation pour le moment.",
+  "no_conversations_found": "Aucune conversation trouvée.",
+
+  "delete_conversation": "Supprimer la conversation",
+  "delete_conversation_confirmation":
+      "Êtes-vous sûr de vouloir supprimer cette conversation ?",
+  "delete": "Supprimer",
+  "cancel": "Annuler",
+
+  "unknown_emotion": "Inconnu",
+
+  "conversation_deleted": "Conversation supprimée avec succès.",
+  "error_deleting_conversation":
+      "Erreur lors de la suppression de la conversation.",
+
+  "no_conversations_today": "Aucune conversation aujourd'hui.",
+  "no_conversations_this_week": "Aucune conversation cette semaine.",
+  "no_conversations_this_month": "Aucune conversation ce mois-ci.",
+
+  "insights_title": "Analyses",
+  "understand_yourself_better":
+      "Apprenez à mieux vous comprendre un peu plus chaque jour.",
+
+  "daily": "Quotidien",
+  "weekly": "Hebdomadaire",
+  "monthly": "Mensuel",
+
+  "today_Insight": "Aujourd'hui",
+  "this_week_Insight": "Cette semaine",
+  "this_month_Insight": "Ce mois-ci",
+
+  "top_emotions": "Émotions principales",
+  "emotion_distribution": "Répartition des émotions",
+
+  "overall_mood": "Humeur générale",
+  "dominant_emotion": "Émotion dominante",
+  "mood_score": "Score d'humeur",
+  "positive_mood": "Humeur positive",
+
+  "stress_level": "Niveau de stress",
+  "sleep_quality": "Qualité du sommeil",
+  "energy_level": "Niveau d'énergie",
+  "mindfulness": "Pleine conscience",
+
+  "positive_percent": "Positif",
+  "total_conversations": "Total des conversations",
+  "total_minutes": "Temps avec Naya",
+  "minutes": "min",
+
+  "daily_report": "Rapport quotidien",
+  "weekly_report": "Rapport hebdomadaire",
+  "monthly_report": "Rapport mensuel",
+
+  "summary": "Résumé",
+  "your_summary": "Votre résumé",
+
+  "no_insights": "Aucune analyse disponible pour cette période.",
+  "no_emotions": "Aucune émotion enregistrée pour cette période.",
+  "no_report": "Aucun rapport disponible pour cette période.",
+
+  "joy": "Joie",
+  "sadness": "Tristesse",
+  "stress": "Stress",
+  "fear": "Peur",
+  "anger": "Colère",
+  "anxiety": "Anxiété",
+  "depression": "Dépression",
+ 
+  "hope": "Espoir",
+  "gratitude": "Gratitude",
+ 
+  "love": "Amour",
+  "neutral": "Neutre",
+
+  "unknown": "Inconnu",
+
+  "completed": "Terminé",
+  "in_progress": "En cours",
+
+  "unable_to_load_achievements": "Impossible de charger les réalisations. Veuillez réessayer.",
+  "retry": "Réessayer",
+  "no_achievements_available": "Aucun succès disponible pour le moment.",
+
+  "unlocked": "Débloqué",
+
+  "activity": "Activité",
+  "less": "Moins",
+  "more": "Plus",
+
+  "conversation_singular": "conversation",
+  "conversation_plural": "conversations",
+
+  "messages_Insight": "Messages",
+  "conversations": "Conversations",
+  "minutes_Insight": "Minutes",
+  "mood_history": "Historique de l'humeur",
+  "daily_insights": "Analyses quotidiennes",
+  "weekly_insights": "Analyses hebdomadaires",
+  "monthly_insights": "Analyses mensuelles",
+  "streak": "Série",
+
+  "message_explorer": "Explorateur de messages",
+  "conversation_master": "Maître des conversations",
+  "time_with_naya": "Temps avec Naya",
+  "mood_tracker": "Suivi de l'humeur",
+  "daily_reflection": "Réflexion quotidienne",
+  "weekly_reflection": "Réflexion hebdomadaire",
+  "monthly_reflection": "Réflexion mensuelle",
+  "consistency": "Régularité",
+
+  "gold": "Or",
+  "silver": "Argent",
+  "bronze": "Bronze",
+
+  "unable_to_load_mood_data": "Impossible de charger les données de votre humeur. Veuillez réessayer.",
+  "no_mood_data_this_week": "Aucune donnée d'humeur cette semaine",
+  "start_chatting_mood_trend": "Commencez à discuter avec Naya pour voir l'évolution de votre humeur.",
+
+  "mood_trend": "Évolution de l'humeur",
+  "mood": "Humeur",
+
+  "jan": "Jan",
+  "feb": "Fév",
+  "mar": "Mars",
+  "apr": "Avr",
+  "may": "Mai",
+  "jun": "Juin",
+  "jul": "Juil",
+  "aug": "Août",
+  "sep": "Sept",
+  "oct": "Oct",
+  "nov": "Nov",
+  "dec": "Déc",
+
+  "mon": "Lun",
+  "tue": "Mar",
+  "wed": "Mer",
+  "thu": "Jeu",
+  "fri": "Ven",
+  "sat": "Sam",
+  "sun": "Dim",
+
+  "better_than_yesterday": "Mieux qu'hier",
+  "better_than_last_week": "Mieux que la semaine dernière",
+  "better_than_last_month": "Mieux que le mois dernier",
+
+  "needs_attention": "Nécessite de l'attention",
+
+  "no_mood_data_available": "Aucune donnée d'humeur disponible",
+
+  "no_emotions_recorded": "Aucune émotion enregistrée pour le moment.",
+
+  "naya_daily_checkin": "Check-in diario de Naya",
+  "daily_checkin_message": "Comment vous sentez-vous aujourd'hui ? Prenez un moment pour réfléchir 💜",
+
+  "unable_to_load_analytics": "Impossible de charger les statistiques. Veuillez réessayer.",
+  "no_analytics_data": "Aucune statistique disponible.",
+
+  "your_journey": "Votre parcours",
+ 
+  "with_naya": "avec Naya",
+  "active_time": "Temps actif",
+  "talking": "de conversation",
+  
+  "days": "jours",
+ 
+  "sleep": "Sommeil",
+  "low": "Faible",
+
+  
+  "achievements": "Réalisations",
+  "achievements_description": "Les étapes importantes que vous avez franchies grâce à Naya"
+
+
+
+
+}

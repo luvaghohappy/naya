@@ -1,0 +1,292 @@
+{
+  
+  "good_morning": "Good morning",
+  "how_are_you_feeling_today": "How are you feeling today?",
+  "start_a_conversation": "Start a conversation",
+  "talk_to_naya": "Talk to Naya",
+  "recent_conversations": "Your recent conversations",
+
+  "welcome": "Welcome to Naya",
+  "question": "How would you like Naya to call you?",
+  "nickname": "Enter a nickname",
+  "language": "Preferred language",
+  "continue": "Continue",
+  "skip": "Skip for now",
+  "privacy": "Your privacy matters to Naya 💜",
+
+  "home": "Home",
+  "history": "History",
+  "insights": "Insights",
+  "settings": "Settings",
+
+  "settings_title": "Settings",
+
+  "privacy_message": "Your conversations stay private with Naya",
+
+  "create_account": "Create an account",
+
+  "create_account_description": "Personalize Naya, save your conversation history, sync preferences and make Naya feel more like your companion.",
+
+  "email": "Email",
+
+  "google": "Google",
+
+  "conversation_history": "Conversation History",
+
+  "voice_preferences": "Voice Preferences",
+
+  "logout": "Logout",
+
+  "voice_personality": "Voice & Personality",
+
+  "voice": "Voice",
+
+  "choose_voice": "Choose Naya's Voice",
+
+  "calm_female": "Calm Female",
+
+  "soft_comforting": "Soft and comforting",
+
+  "friendly_female": "Friendly Female",
+
+  "warm_cheerful": "Warm and cheerful",
+
+  "gentle_male": "Gentle Male",
+
+  "relaxed_supportive": "Relaxed and supportive",
+
+  "personality": "Personality",
+
+  "choose_personality": "Choose Naya's Personality",
+
+  "calm": "Calm",
+
+  "calm_description": "Gentle and emotionally supportive",
+
+  "friendly": "Friendly",
+
+  "friendly_description": "Warm and cheerful conversations",
+
+  "motivational": "Motivational",
+
+  "motivational_description": "Energetic and uplifting",
+
+  "reminders": "Reminders",
+
+  "daily_checkin": "Daily Check-in",
+
+  "reminder_time": "Reminder Time",
+
+  "preferences": "Preferences",
+
+  "dark_mode": "Dark Mode",
+
+  "privacy_data": "Privacy & Data",
+
+  "create_your_account": "Create your account",
+
+  "save_conversations": "Save your conversations, sync your preferences and personalize Naya.",
+
+  "email_address": "Email Address",
+
+  "create_password": "Create Password",
+
+  "create_account_button": "Create Account",
+
+  "maybe_later": "Maybe later",
+
+  "check_email": "Check your email to confirm your account.",
+
+  "language_settings": "Language",
+
+  "nickname_settings": "Nickname",
+
+  "my_memories": "My Memories",
+  "every_conversation_step_forward": "Every conversation, a step forward.",
+
+  "search_conversations": "Search conversations...",
+
+  "all": "All",
+  "today": "Today",
+  "this_week": "This Week",
+  "this_month": "This Month",
+
+  "new_conversation": "New Conversation",
+
+  "messages": "messages",
+  "message": "message",
+
+  "no_conversations": "No conversations yet.",
+  "no_conversations_found": "No conversations found.",
+
+  "delete_conversation": "Delete Conversation",
+  "delete_conversation_confirmation":
+      "Are you sure you want to delete this conversation?",
+  "delete": "Delete",
+  "cancel": "Cancel",
+
+  "unknown_emotion": "Unknown",
+
+  "conversation_deleted": "Conversation deleted successfully.",
+  "error_deleting_conversation": "Error deleting conversation.",
+
+  "no_conversations_today": "No conversations today.",
+  "no_conversations_this_week": "No conversations this week.",
+  "no_conversations_this_month": "No conversations this month.",
+
+  
+  "insights_title": "Insights",
+  "understand_yourself_better": "Understand yourself a little better every day ✨.",
+
+  "daily": "Daily",
+  "weekly": "Weekly",
+  "monthly": "Monthly",
+
+  "today_Insight": "Today",
+  "this_week_Insight": "This Week",
+  "this_month_Insight": "This Month",
+
+  "top_emotions": "Top Emotions",
+  "emotion_distribution": "Emotion Distribution",
+
+  "overall_mood": "Overall Mood",
+  "dominant_emotion": "Dominant Emotion",
+  "mood_score": "Mood Score",
+  "positive_mood": "Positive Mood",
+
+  "stress_level": "Stress Level",
+  "sleep_quality": "Sleep Quality",
+  "energy_level": "Energy Level",
+  "mindfulness": "Mindfulness",
+
+  "positive_percent": "Positive",
+  "total_conversations": "Total Conversations",
+  "total_minutes": "Time With Naya",
+  "minutes": "min",
+
+  "daily_report": "Daily Report",
+  "weekly_report": "Weekly Report",
+  "monthly_report": "Monthly Report",
+
+  "summary": "Summary",
+  "your_summary": "Your Summary",
+
+  "no_insights": "No insights available for this period.",
+  "no_emotions": "No emotions recorded for this period.",
+  "no_report": "No report available for this period.",
+
+  "joy": "Joy",
+  "sadness": "Sadness",
+  "stress": "Stress",
+  "fear": "Fear",
+  "anger": "Anger",
+  "anxiety": "Anxiety",
+  "depression": "Depression",
+    "hope": "Hope",
+  "gratitude": "Gratitude",
+  "love": "Love",
+  "neutral": "Neutral",
+
+  "unknown": "Unknown",
+
+  "completed": "Completed",
+  "in_progress": "In Progress",
+
+  "unable_to_load_achievements": "Unable to load achievements. Please try again.",
+  "retry": "Retry",
+  "no_achievements_available": "No achievements available yet.",
+
+  "unlocked": "Unlocked",
+
+  "activity": "Activity",
+  "less": "Less",
+  "more": "More",
+
+  "conversation_singular": "conversation",
+  "conversation_plural": "conversations",
+
+  "messages_Insight": "Messages",
+  "conversations": "Conversations",
+  "minutes_Insight": "Minutes",
+  "mood_history": "Mood History",
+  "daily_insights": "Daily Insights",
+  "weekly_insights": "Weekly Insights",
+  "monthly_insights": "Monthly Insights",
+  "streak": "Streak",
+
+  "message_explorer": "Message Explorer",
+  "conversation_master": "Conversation Master",
+  "time_with_naya": "Time With Naya",
+  "mood_tracker": "Mood Tracker",
+  "daily_reflection": "Daily Reflection",
+  "weekly_reflection": "Weekly Reflection",
+  "monthly_reflection": "Monthly Reflection",
+  "consistency": "Consistency",
+
+  "gold": "Gold",
+  "silver": "Silver",
+  "bronze": "Bronze",
+
+  
+  "unable_to_load_mood_data": "Unable to load mood data. Please try again.",
+  "no_mood_data_this_week": "No mood data this week",
+  "start_chatting_mood_trend": "Start chatting with Naya to see your mood trend.",
+
+  "mood_trend": "Mood Trend",
+  "mood": "Mood",
+
+  "jan": "Jan",
+  "feb": "Feb",
+  "mar": "Mar",
+  "apr": "Apr",
+  "may": "May",
+  "jun": "Jun",
+  "jul": "Jul",
+  "aug": "Aug",
+  "sep": "Sep",
+  "oct": "Oct",
+  "nov": "Nov",
+  "dec": "Dec",
+
+  "mon": "Mon",
+  "tue": "Tue",
+  "wed": "Wed",
+  "thu": "Thu",
+  "fri": "Fri",
+  "sat": "Sat",
+  "sun": "Sun",
+
+  "better_than_yesterday": "Better than yesterday",
+  "better_than_last_week": "Better than last week",
+  "better_than_last_month": "Better than last month",
+
+  "needs_attention": "Needs attention",
+
+  "no_mood_data_available": "No mood data available",
+  "no_emotions_recorded": "No emotions recorded yet.",
+
+  "naya_daily_checkin": "Naya Daily Check-in",
+  "daily_checkin_message": "How are you feeling today? Take a moment to reflect 💜",
+  
+  "unable_to_load_analytics": "Unable to load analytics. Please try again.",
+  "no_analytics_data": "No analytics available.",
+  
+  "your_journey": "Your Journey",
+ 
+  "with_naya": "with Naya",
+  "active_time": "Active Time",
+  "talking": "talking",
+
+  "days": "days",
+  "sleep": "Sleep",
+  "low": "Low",
+
+  "achievements": "Achievements",
+  "achievements_description": "Milestones you've unlocked through using Naya"
+
+
+}
+
+
+
+
