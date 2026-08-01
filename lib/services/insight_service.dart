@@ -13,7 +13,7 @@ class InsightService {
     final user = supabase.auth.currentUser;
 
     if (user == null) {
-      throw Exception("User not logged in".tr());
+      throw Exception("user_not_logged_in".tr());
     }
 
     final range = PeriodHelper.getRange(period, selectedDate);

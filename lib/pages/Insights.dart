@@ -98,7 +98,7 @@ class _InsightsState extends State<Insights> {
                 builder: (context, constraints) {
                   if (constraints.maxWidth > 1200) {
                     // Desktop
-                   
+
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -142,7 +142,7 @@ class _InsightsState extends State<Insights> {
                 builder: (context, constraints) {
                   if (constraints.maxWidth > 1200) {
                     // Desktop
-                   
+
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

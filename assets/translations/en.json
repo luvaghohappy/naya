@@ -281,8 +281,14 @@
   "sleep": "Sleep",
   "low": "Low",
 
+   "user_not_logged_in": "User not logged in.",
+  "user_not_authenticated": "User is not authenticated.",
+
   "achievements": "Achievements",
-  "achievements_description": "Milestones you've unlocked through using Naya"
+  "achievements_description": "Milestones you've unlocked through using Naya",
+  
+  "personalize_naya": "Personalize Naya, save your conversation history, sync preferences and make Naya feel more like your companion."
+
 
 
 }

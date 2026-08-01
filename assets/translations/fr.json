@@ -287,8 +287,12 @@
 
   
   "achievements": "Réalisations",
-  "achievements_description": "Les étapes importantes que vous avez franchies grâce à Naya"
+  "achievements_description": "Les étapes importantes que vous avez franchies grâce à Naya",
+  
+  "personalize_naya": "Personnalisez Naya, enregistrez l'historique de vos conversations, synchronisez vos préférences et faites de Naya un véritable compagnon à vos côtés.",
 
+   "user_not_logged_in": "L'utilisateur n'est pas connecté.",
+  "user_not_authenticated": "L'utilisateur n'est pas authentifié."
 
 
 

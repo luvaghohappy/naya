@@ -20,6 +20,7 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> {
+
   int currentIndex = 0;
 
   final GlobalKey<HomePageState> homeKey = GlobalKey<HomePageState>();

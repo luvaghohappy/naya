@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,8 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+
+  late final StreamSubscription<AuthState> authSubscription;
 
   late stt.SpeechToText _speech;
   late FlutterTts tts;
@@ -55,6 +58,24 @@ class HomePageState extends State<HomePage>
   }
 
   List<Message> messages = [];
+
+  Future<void> refreshPage() async {
+    final user = Supabase.instance.client.auth.currentUser;
+
+    if (user == null) {
+      if (!mounted) return;
+
+      setState(() {
+        messages.clear();
+        currentConversationId = null;
+      });
+
+      return;
+    }
+
+    await loadMessages();
+  }
+
   final ScrollController _scrollController = ScrollController();
 
   final TextEditingController messageController = TextEditingController();
@@ -85,6 +106,18 @@ class HomePageState extends State<HomePage>
     tts = FlutterTts();
 
     initializeApp();
+
+    authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
+      data,
+    ) {
+      refreshPage();
+    });
+  }
+
+  @override
+  void dispose() {
+    authSubscription.cancel();
+    super.dispose();
   }
 
   /// ---------------- INITIALIZE ----------------
@@ -795,25 +828,22 @@ Summary rules:
       "summary": summary,
     }, onConflict: "user_id,period_start");
 
-    final now = DateTime.now();
-
     // Sunday
-    if (now.weekday == DateTime.sunday) {
-      await updateWeeklyInsights();
-    }
 
-    // Last day of the month
-    final tomorrow = now.add(const Duration(days: 1));
+    updateWeeklyInsights();
 
-    if (tomorrow.month != now.month) {
-      await updateMonthlyInsights();
-    }
+    await updateMonthlyInsights();
   }
 
   ///Generate Weekly Report
   Future<void> updateWeeklyInsights() async {
+    print("===== updateWeeklyInsights CALLED =====");
+
     final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) return;
+    if (user == null) {
+      print("No logged in user");
+      return;
+    }
 
     final weekStart = DateTime.now().subtract(
       Duration(days: DateTime.now().weekday - 1),
@@ -886,6 +916,7 @@ Summary rules:
       },
       body: jsonEncode({
         "model": "gpt-4o-mini",
+        "response_format": {"type": "json_object"},
         "messages": [
           {
             "role": "system",
@@ -927,7 +958,14 @@ Total minutes with Naya: $totalMinutes
 
     final content = result["choices"][0]["message"]["content"];
 
-    final summary = jsonDecode(content)["summary"] ?? "";
+    String summary;
+
+    try {
+      summary = jsonDecode(content)["summary"] ?? "";
+    } catch (e) {
+      print("OpenAI returned plain text instead of JSON.");
+      summary = content.toString();
+    }
 
     await Supabase.instance.client.from("weekly_insights").upsert({
       "user_id": user.id,
@@ -1017,6 +1055,7 @@ Total minutes with Naya: $totalMinutes
       },
       body: jsonEncode({
         "model": "gpt-4o-mini",
+        "response_format": {"type": "json_object"},
         "messages": [
           {
             "role": "system",
@@ -1040,7 +1079,14 @@ Total entries: ${month.length}
 
     final content = result["choices"][0]["message"]["content"];
 
-    final summary = jsonDecode(content)["summary"];
+    String summary;
+
+    try {
+      summary = jsonDecode(content)["summary"] ?? "";
+    } catch (e) {
+      print("OpenAI returned plain text instead of JSON.");
+      summary = content.toString();
+    }
 
     await Supabase.instance.client.from("monthly_insights").upsert({
       "user_id": user.id,
@@ -1166,7 +1212,7 @@ Rules:
       // skip weak memories
       if (importance < 3) continue;
 
-      // 🔍 check duplicates
+      // check duplicates
       final alreadyExists = existing.any(
         (e) =>
             e["memory"].toString().toLowerCase().contains(text.toLowerCase()) ||

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -29,6 +31,8 @@ class _HistoryState extends State<History> {
 
   bool isLoading = true;
 
+  late final StreamSubscription<AuthState> authSubscription;
+
   Future<void> refreshHistory() async {
     setState(() {
       isLoading = true;
@@ -37,10 +41,39 @@ class _HistoryState extends State<History> {
     await loadConversations();
   }
 
+  Future<void> refreshPage() async {
+    final user = Supabase.instance.client.auth.currentUser;
+
+    if (user == null) {
+      if (!mounted) return;
+
+      setState(() {
+        conversations = [];
+      });
+
+      return;
+    }
+
+    await loadConversations();
+  }
+
   @override
   void initState() {
     super.initState();
+
     loadConversations();
+
+    authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
+      data,
+    ) {
+      refreshPage();
+    });
+  }
+
+  @override
+  void dispose() {
+    authSubscription.cancel();
+    super.dispose();
   }
 
   Future<void> loadConversations() async {

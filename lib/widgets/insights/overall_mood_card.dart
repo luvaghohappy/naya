@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:naya/models/InsightModel.dart';
 import 'package:naya/services/insight_service.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class OverallMoodCard extends StatefulWidget {
   final InsightPeriod period;
@@ -101,6 +102,37 @@ class _OverallMoodCardState extends State<OverallMoodCard> {
 
   @override
   Widget build(BuildContext context) {
+     final user = Supabase.instance.client.auth.currentUser;
+
+  if (user == null) {
+    return Container(
+      height: 160,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(28),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.person_off_outlined,
+              size: 42,
+              color: Colors.grey,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              "user_not_logged_in".tr(),
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
     return FutureBuilder<OverallMoodModel>(
       future: moodFuture,
       builder: (context, snapshot) {

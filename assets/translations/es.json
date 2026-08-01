@@ -288,7 +288,13 @@
 
   "bronze": "Bronce",
   "silver": "Plata",
-  "gold": "Oro"
+  "gold": "Oro",
+
+   "user_not_logged_in": "El usuario no ha iniciado sesión.",
+  "user_not_authenticated": "El usuario no está autenticado.",
+  
+  "personalize_naya": "Personaliza Naya, guarda tu historial de conversaciones, sincroniza tus preferencias y haz que Naya se sienta más como tu compañero."
+
 
   
 

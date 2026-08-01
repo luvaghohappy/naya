@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:naya/Mainpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -170,16 +171,20 @@ class _SettingsState extends State<Settings> {
     await Supabase.instance.client.auth.signOut();
 
     final prefs = await SharedPreferences.getInstance();
-
     await prefs.clear();
 
-    if (mounted) {
-      setState(() {
-        isLoggedIn = false;
-        email = "";
-        nickname = "Friend";
-      });
-    }
+    if (!mounted) return;
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => IntroPage(
+          isDarkMode: widget.isDarkMode,
+          onToggleTheme: widget.onToggleTheme,
+        ),
+      ),
+      (_) => false,
+    );
   }
 
   ///----------Email Sign in------------
@@ -395,14 +400,14 @@ class _SettingsState extends State<Settings> {
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).cardColor,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
 
                       const SizedBox(height: 10),
 
                       Text(
-                        "Personalize Naya, save your conversation history, sync preferences and make Naya feel more like your companion.",
+                        "personalize_naya".tr(),
 
                         textAlign: TextAlign.center,
 
@@ -437,12 +442,16 @@ class _SettingsState extends State<Settings> {
 
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(18),
+                                  color: Theme.of(context).cardColor,
 
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Color(0xFF1F1F2B),
-                                      Color(0xFF2A2A3A),
-                                    ],
+                                  // gradient: const LinearGradient(
+                                  //   colors: [
+                                  //     Color(0xFF1F1F2B),
+                                  //     Color.fromRGBO(42, 42, 58, 1),
+                                  //   ],
+                                  // ),
+                                  border: Border.all(
+                                    color: Colors.grey.shade300,
                                   ),
                                 ),
 
@@ -452,7 +461,7 @@ class _SettingsState extends State<Settings> {
                                   children: [
                                     Icon(
                                       Icons.email_outlined,
-                                      color: Theme.of(context).cardColor,
+                                      color: Colors.blue,
                                       size: 18,
                                     ),
 
@@ -462,7 +471,9 @@ class _SettingsState extends State<Settings> {
                                       "email".tr(),
 
                                       style: TextStyle(
-                                        color: Theme.of(context).cardColor,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 13,
                                       ),
@@ -486,14 +497,14 @@ class _SettingsState extends State<Settings> {
 
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(18),
+                                  color: Theme.of(context).cardColor,
 
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Color(0xFFFFFFFF),
-                                      Color(0xFFF2F2F2),
-                                    ],
-                                  ),
-
+                                  // gradient: const LinearGradient(
+                                  //   colors: [
+                                  //     Color(0xFFFFFFFF),
+                                  //     Color(0xFFF2F2F2),
+                                  //   ],
+                                  // ),
                                   border: Border.all(
                                     color: Colors.grey.shade300,
                                   ),
@@ -512,10 +523,12 @@ class _SettingsState extends State<Settings> {
                                     SizedBox(width: 4),
 
                                     Text(
-                                      "google".tr(),
+                                      "google",
 
                                       style: TextStyle(
-                                        color: Theme.of(context).cardColor,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
                                         fontWeight: FontWeight.w600,
                                         fontSize: 13,
                                       ),
@@ -551,20 +564,19 @@ class _SettingsState extends State<Settings> {
 
                   child: Column(
                     children: [
-                      buildTile(
-                        icon: Icons.history_rounded,
-                        title: "conversation_history".tr(),
-                      ),
+                      // buildTile(
+                      //   icon: Icons.history_rounded,
+                      //   title: "conversation_history".tr(),
+                      // ),
 
-                      const Divider(),
+                      // const Divider(),
 
-                      buildTile(
-                        icon: Icons.graphic_eq_rounded,
-                        title: "voice_preferences".tr(),
-                      ),
+                      // buildTile(
+                      //   icon: Icons.graphic_eq_rounded,
+                      //   title: "voice_preferences".tr(),
+                      // ),
 
-                      const Divider(),
-
+                      // const Divider(),
                       GestureDetector(
                         onTap: logout,
 
@@ -1170,7 +1182,7 @@ class _SettingsState extends State<Settings> {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Theme.of(context).colorScheme.surface,
-                        hintText: "nickname_setting".tr(),
+                        hintText: "nickname".tr(),
                         prefixIcon: const Icon(
                           Icons.person_outline_rounded,
                           color: Color(0xFF8B5CF6),
