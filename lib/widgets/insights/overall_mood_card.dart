@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:naya/models/InsightModel.dart';
@@ -22,20 +24,47 @@ class OverallMoodCard extends StatefulWidget {
 class _OverallMoodCardState extends State<OverallMoodCard> {
   final InsightService service = InsightService();
 
-  late Future<OverallMoodModel> moodFuture;
-
-  Future<void> refresh() async {
-    if (!mounted) return;
-
-    setState(() {
-      moodFuture = service.getOverallMood(widget.period, widget.selectedDate);
-    });
-  }
+  late final StreamSubscription<AuthState> authSubscription;
 
   @override
   void initState() {
     super.initState();
     moodFuture = service.getOverallMood(widget.period, widget.selectedDate);
+    refresh();
+
+    authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
+      _,
+    ) {
+      refresh();
+    });
+  }
+
+  @override
+  void dispose() {
+    authSubscription.cancel();
+    super.dispose();
+  }
+
+  late Future<OverallMoodModel> moodFuture;
+
+  Future<void> refresh() async {
+    if (!mounted) return;
+
+    final user = Supabase.instance.client.auth.currentUser;
+
+    setState(() {
+      if (user == null) {
+        moodFuture = Future.value(
+          OverallMoodModel(
+            emotion: "Neutral",
+            positivePercent: 0,
+            previousPercent: 0,
+          ),
+        );
+      } else {
+        moodFuture = service.getOverallMood(widget.period, widget.selectedDate);
+      }
+    });
   }
 
   @override
@@ -102,37 +131,33 @@ class _OverallMoodCardState extends State<OverallMoodCard> {
 
   @override
   Widget build(BuildContext context) {
-     final user = Supabase.instance.client.auth.currentUser;
+    final user = Supabase.instance.client.auth.currentUser;
 
-  if (user == null) {
-    return Container(
-      height: 160,
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(28),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.person_off_outlined,
-              size: 42,
-              color: Colors.grey,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              "user_not_logged_in".tr(),
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-          ],
+    if (user == null) {
+      return Container(
+        height: 160,
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(28),
         ),
-      ),
-    );
-  }
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.person_off_outlined, size: 42, color: Colors.grey),
+              const SizedBox(height: 12),
+              Text(
+                "user_not_logged_in".tr(),
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return FutureBuilder<OverallMoodModel>(
       future: moodFuture,
       builder: (context, snapshot) {
@@ -171,7 +196,7 @@ class _OverallMoodCardState extends State<OverallMoodCard> {
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(28),
-            border: Border.all(color: const Color(0xffECE5FF)),
+            // border: Border.all(color: const Color(0xffECE5FF)),
             gradient: LinearGradient(
               colors: [
                 Theme.of(context).cardColor,

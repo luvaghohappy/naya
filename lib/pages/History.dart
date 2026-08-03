@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -22,6 +21,8 @@ class History extends StatefulWidget {
 
 class _HistoryState extends State<History> {
   List<ConversationModel> conversations = [];
+
+  late final RealtimeChannel _messagesChannel;
 
   final TextEditingController searchController = TextEditingController();
 
@@ -63,6 +64,18 @@ class _HistoryState extends State<History> {
 
     loadConversations();
 
+    _messagesChannel = Supabase.instance.client
+        .channel('messages-history')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.insert,
+          schema: 'public',
+          table: 'Messages',
+          callback: (payload) {
+            loadConversations();
+          },
+        )
+        .subscribe();
+
     authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
       data,
     ) {
@@ -72,6 +85,7 @@ class _HistoryState extends State<History> {
 
   @override
   void dispose() {
+    Supabase.instance.client.removeChannel(_messagesChannel);
     authSubscription.cancel();
     super.dispose();
   }

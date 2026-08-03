@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:naya/services/TopEmotionService.dart';
 import '../../models/InsightModel.dart';
 import '../../models/top_emotion_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class TopEmotionsCard extends StatefulWidget {
   final InsightPeriod period;
@@ -20,6 +23,29 @@ class TopEmotionsCard extends StatefulWidget {
 class _TopEmotionsCardState extends State<TopEmotionsCard> {
   late Future<List<EmotionStat>> emotionsFuture;
 
+   late final StreamSubscription<AuthState> authSubscription;
+
+
+  @override
+  void initState() {
+    super.initState();
+     emotionsFuture = TopEmotionService().loadTopEmotions(
+      widget.period,
+      widget.selectedDate,
+    );
+    refresh();
+
+     authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((_) {
+    refresh();
+  });
+  }
+
+  @override
+void dispose() {
+  authSubscription.cancel();
+  super.dispose();
+}
+
   Future<void> refresh() async {
     if (!mounted) return;
 
@@ -29,15 +55,6 @@ class _TopEmotionsCardState extends State<TopEmotionsCard> {
         widget.selectedDate,
       );
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    emotionsFuture = TopEmotionService().loadTopEmotions(
-      widget.period,
-      widget.selectedDate,
-    );
   }
 
   @override
@@ -188,6 +205,33 @@ class _TopEmotionsCardState extends State<TopEmotionsCard> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Supabase.instance.client.auth.currentUser;
+
+    if (user == null) {
+      return Container(
+        height: 160,
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(28),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.person_off_outlined, size: 42, color: Colors.grey),
+              const SizedBox(height: 12),
+              Text(
+                "user_not_logged_in".tr(),
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return FutureBuilder<List<EmotionStat>>(
       future: emotionsFuture,
 
@@ -219,7 +263,7 @@ class _TopEmotionsCardState extends State<TopEmotionsCard> {
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(28),
 
-            border: Border.all(color: Colors.grey.shade200),
+            // border: Border.all(color: Colors.grey.shade200),
 
             boxShadow: [
               BoxShadow(

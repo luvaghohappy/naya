@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:naya/services/analytics_service.dart';
 import 'package:naya/widgets/insights/analytics_card.dart';
 import '../../models/AnalyticsModel.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AnalyticsGrid extends StatefulWidget {
   const AnalyticsGrid({super.key});
@@ -14,10 +16,24 @@ class AnalyticsGrid extends StatefulWidget {
 class _AnalyticsGridState extends State<AnalyticsGrid> {
   late Future<AnalyticsModel> analyticsFuture;
 
+  late final StreamSubscription<AuthState> authSubscription;
+
   @override
   void initState() {
     super.initState();
     refresh();
+
+    authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
+      _,
+    ) {
+      refresh();
+    });
+  }
+
+  @override
+  void dispose() {
+    authSubscription.cancel();
+    super.dispose();
   }
 
   void refresh() {
@@ -50,28 +66,58 @@ class _AnalyticsGridState extends State<AnalyticsGrid> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Supabase.instance.client.auth.currentUser;
+
+    if (user == null) {
+      return Container(
+        height: 160,
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(28),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.person_off_outlined, size: 42, color: Colors.grey),
+              const SizedBox(height: 12),
+              Text(
+                "user_not_logged_in".tr(),
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return FutureBuilder<AnalyticsModel>(
       future: analyticsFuture,
 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (snapshot.hasError) {
-          debugPrint("Analytics Error: ${snapshot.error}");
-
-          return Center(
-            child: Text(
-              "unable_to_load_analytics".tr(),
-              textAlign: TextAlign.center,
-            ),
+          return const SizedBox(
+            height: 240,
+            child: Center(child: CircularProgressIndicator()),
           );
         }
 
         if (!snapshot.hasData) {
-          return Center(
-            child: Text("no_analytics_data".tr(), textAlign: TextAlign.center),
+          return Container(
+            height: 240,
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: Center(
+              child: Text(
+                "unable_to_load_analytics".tr(),
+                textAlign: TextAlign.center,
+              ),
+            ),
           );
         }
 
@@ -82,7 +128,7 @@ class _AnalyticsGridState extends State<AnalyticsGrid> {
 
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
-            border: Border.all(color: Colors.grey.shade200),
+            // border: Border.all(color: Colors.grey.shade200),
             borderRadius: BorderRadius.circular(26),
             boxShadow: [
               BoxShadow(color: Colors.black.withOpacity(.05), blurRadius: 20),

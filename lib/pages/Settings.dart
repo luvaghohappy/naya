@@ -36,6 +36,8 @@ class _SettingsState extends State<Settings> {
 
   String reminderTime = "9:00 PM";
 
+  bool isCreatingAccount = false;
+
   String getLanguageName() {
     switch (currentLanguage) {
       case "fr":
@@ -190,20 +192,54 @@ class _SettingsState extends State<Settings> {
   ///----------Email Sign in------------
 
   Future<void> signInWithEmail() async {
+    if (emailController.text.trim().isEmpty ||
+        passwordController.text.isEmpty) {}
+
     try {
       await Supabase.instance.client.auth.signInWithPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
     } catch (e) {
-      debugPrint("Login Error: $e");
-
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(e.toString())));
-      }
+      await showResultDialog(
+        context: context,
+        success: false,
+        title: "Login failed",
+        message: e.toString(),
+      );
     }
+  }
+
+  //Dialog result
+  Future<void> showResultDialog({
+    required BuildContext context,
+    required bool success,
+    required String title,
+    required String message,
+  }) async {
+    await showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Icon(
+              success ? Icons.check_circle : Icons.error,
+              color: success ? Colors.green : Colors.red,
+            ),
+            const SizedBox(width: 10),
+            Expanded(child: Text(title)),
+          ],
+        ),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
   }
 
   ///------------Google Sign in----------
@@ -1251,25 +1287,60 @@ class _SettingsState extends State<Settings> {
                 height: 58,
                 child: ElevatedButton(
                   onPressed: () async {
-                    final supabase = Supabase.instance.client;
+                    if (isCreatingAccount) return;
+
+                    if (nicknameController.text.trim().isEmpty ||
+                        emailController.text.trim().isEmpty ||
+                        passwordController.text.isEmpty) {
+                      await showResultDialog(
+                        context: context,
+                        success: false,
+                        title: "Missing Information",
+                        message: "Please fill in all the fields.",
+                      );
+                      return;
+                    }
+
+                    setState(() => isCreatingAccount = true);
 
                     try {
-                      final response = await supabase.auth.signUp(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
+                      final prefs = await SharedPreferences.getInstance();
+
+                      await prefs.setString(
+                        "nickname",
+                        nicknameController.text.trim(),
                       );
 
-                      if (response.user != null) {
-                        if (context.mounted) {
-                          Navigator.pop(context);
+                      await Supabase.instance.client.auth.signUp(
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                        emailRedirectTo: "io.supabase.flutter://login-callback",
+                      );
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("check_email".tr())),
-                          );
-                        }
+                      if (context.mounted) {
+                        Navigator.pop(context);
+
+                        await showResultDialog(
+                          context: context,
+                          success: true,
+                          title: "Account Created",
+                          message:
+                              "We've sent a verification email to your inbox. Please verify your email before signing in.",
+                        );
                       }
                     } catch (e) {
-                      debugPrint(e.toString());
+                      if (context.mounted) {
+                        await showResultDialog(
+                          context: context,
+                          success: false,
+                          title: "Registration Failed",
+                          message: e.toString(),
+                        );
+                      }
+                    } finally {
+                      if (mounted) {
+                        setState(() => isCreatingAccount = false);
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -1279,14 +1350,16 @@ class _SettingsState extends State<Settings> {
                       borderRadius: BorderRadius.circular(22),
                     ),
                   ),
-                  child: Text(
-                    "create_account_button".tr(),
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
+                  child: isCreatingAccount
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                          "create_account_button".tr(),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                 ),
               ),
 

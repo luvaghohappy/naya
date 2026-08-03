@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../models/achievement_model.dart';
 import '../../services/achievement_service.dart';
 import 'achievement_badge.dart';
+import 'dart:async';
 
 class AchievementCard extends StatefulWidget {
   const AchievementCard({super.key});
@@ -15,10 +16,24 @@ class AchievementCard extends StatefulWidget {
 class _AchievementCardState extends State<AchievementCard> {
   late Future<List<AchievementModel>> future;
 
+  late final StreamSubscription<AuthState> authSubscription;
+
   @override
   void initState() {
     super.initState();
     refresh();
+
+    authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
+      _,
+    ) {
+      refresh();
+    });
+  }
+
+  @override
+  void dispose() {
+    authSubscription.cancel();
+    super.dispose();
   }
 
   void refresh() {

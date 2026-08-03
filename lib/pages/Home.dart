@@ -132,26 +132,33 @@ class HomePageState extends State<HomePage>
 
     await initializeTTS();
 
+    // Wait until the conversation is ready
     await loadConversation();
 
-    if (currentConversationId == null) return;
+    if (!mounted) return;
 
-    final data = await Supabase.instance.client
-        .from('Messages')
-        .select()
-        .eq('id_conversation', currentConversationId!)
-        .order('created_at', ascending: true);
+    // If there is still no conversation, stop here.
+    if (currentConversationId == null) {
+      debugPrint("No active conversation.");
+      return;
+    }
 
-    final conversationText = data.map((e) => e['message']).join("\n");
+    // Load messages
+    await loadMessages();
 
-    await extractMemory(conversationText);
+    // Build memory
+    if (messages.isNotEmpty) {
+      final conversationText = messages.map((m) => m.text).join("\n");
 
-    if (messages.isEmpty) {
-      Future.delayed(const Duration(milliseconds: 500), () async {
-        await speakGreeting();
-      });
-    } else {
+      await extractMemory(conversationText);
+
       await startListening();
+    } else {
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      if (!mounted) return;
+
+      await speakGreeting();
     }
   }
 
@@ -439,6 +446,9 @@ Rules:
 
     if (conversation == null) {
       currentConversationId = await createConversation();
+
+      await loadMessages();
+
       return;
     }
 
@@ -456,10 +466,10 @@ Rules:
 
       messages.clear();
 
+      await loadMessages();
+
       return;
     }
-
-    await loadMessages();
   }
 
   ///------LOAD MESSAGES
