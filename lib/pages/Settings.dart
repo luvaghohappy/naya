@@ -157,13 +157,41 @@ class _SettingsState extends State<Settings> {
 
   Future<void> loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
+    final authUser = Supabase.instance.client.auth.currentUser;
+
+    String nickname = prefs.getString("nickname") ?? "Friend";
+    String avatarUrl = authUser?.userMetadata?['avatar_url'] ?? "";
+    String email = authUser?.email ?? "";
+
+    if (authUser != null) {
+      try {
+        final data = await Supabase.instance.client
+            .from("UsersTable")
+            .select()
+            .eq("id", authUser.id)
+            .maybeSingle();
+
+        if (data != null) {
+          nickname = data["nickname"] ?? nickname;
+
+          if (data != null) {
+            avatarUrl = data["avatar_url"] ?? avatarUrl;
+          }
+
+          // Prefer the email from UsersTable if it exists
+          email = data["email"] ?? email;
+        }
+      } catch (e) {
+        debugPrint("Couldn't load UsersTable profile: $e");
+      }
+    }
+
+    if (!mounted) return;
 
     setState(() {
-      nickname = prefs.getString("nickname") ?? "Friend";
-
-      isLoggedIn = prefs.getBool("isLoggedIn") ?? false;
-
-      email = prefs.getString("email") ?? "";
+      this.nickname = nickname;
+      this.email = email;
+      isLoggedIn = authUser != null;
     });
   }
 
