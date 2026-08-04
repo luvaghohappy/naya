@@ -21,31 +21,31 @@ class ActivityHeatmap extends StatefulWidget {
 class _ActivityHeatmapState extends State<ActivityHeatmap> {
   late Future<List<ActivityModel>> future;
 
-   late final StreamSubscription<AuthState> authSubscription;
-
+  late final StreamSubscription<AuthState> authSubscription;
 
   @override
   void initState() {
     super.initState();
     refresh();
 
-     authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((_) {
-    refresh();
-  });
+    authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
+      _,
+    ) {
+      refresh();
+    });
   }
 
   @override
-void dispose() {
-  authSubscription.cancel();
-  super.dispose();
-}
-
+  void dispose() {
+    authSubscription.cancel();
+    super.dispose();
+  }
 
   void refresh() {
     if (!mounted) return;
 
     setState(() {
-       future = ActivityHeatmapService().loadActivity();
+      future = ActivityHeatmapService().loadActivity();
     });
   }
 
@@ -71,7 +71,7 @@ void dispose() {
 
   @override
   Widget build(BuildContext context) {
-     final user = Supabase.instance.client.auth.currentUser;
+    final user = Supabase.instance.client.auth.currentUser;
 
     if (user == null) {
       return Container(

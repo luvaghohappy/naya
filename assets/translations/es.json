@@ -293,7 +293,15 @@
    "user_not_logged_in": "El usuario no ha iniciado sesión.",
   "user_not_authenticated": "El usuario no está autenticado.",
   
-  "personalize_naya": "Personaliza Naya, guarda tu historial de conversaciones, sincroniza tus preferencias y haz que Naya se sienta más como tu compañero."
+  "personalize_naya": "Personaliza Naya, guarda tu historial de conversaciones, sincroniza tus preferencias y haz que Naya se sienta más como tu compañero.",
+
+  "missing_information": "Información faltante",
+  "please_enter_email_password": "Por favor, introduce tu correo electrónico y tu contraseña.",
+
+  "account_created": "Cuenta creada",
+  "account_created_successfully": "Tu cuenta se ha creado correctamente. Ahora puedes iniciar sesión en Naya.",
+
+  "registration_failed": "Error en el registro"
 
 
   

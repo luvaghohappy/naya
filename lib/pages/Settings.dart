@@ -193,21 +193,22 @@ class _SettingsState extends State<Settings> {
 
   Future<void> signInWithEmail() async {
     if (emailController.text.trim().isEmpty ||
-        passwordController.text.isEmpty) {}
+        passwordController.text.trim().isEmpty) {
+      await showResultDialog(
+        context: context,
+        success: false,
+        title: "missing_information".tr(),
+        message: "please_enter_email_password".tr(),
+      );
+      return;
+    }
 
     try {
       await Supabase.instance.client.auth.signInWithPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-    } catch (e) {
-      await showResultDialog(
-        context: context,
-        success: false,
-        title: "Login failed",
-        message: e.toString(),
-      );
-    }
+    } catch (e) {}
   }
 
   //Dialog result
@@ -1291,12 +1292,12 @@ class _SettingsState extends State<Settings> {
 
                     if (nicknameController.text.trim().isEmpty ||
                         emailController.text.trim().isEmpty ||
-                        passwordController.text.isEmpty) {
+                        passwordController.text.trim().isEmpty) {
                       await showResultDialog(
                         context: context,
                         success: false,
-                        title: "Missing Information",
-                        message: "Please fill in all the fields.",
+                        title: "missing_information".tr(),
+                        message: "please_enter_email_password".tr(),
                       );
                       return;
                     }
@@ -1314,7 +1315,6 @@ class _SettingsState extends State<Settings> {
                       await Supabase.instance.client.auth.signUp(
                         email: emailController.text.trim(),
                         password: passwordController.text.trim(),
-                        emailRedirectTo: "io.supabase.flutter://login-callback",
                       );
 
                       if (context.mounted) {
@@ -1323,9 +1323,8 @@ class _SettingsState extends State<Settings> {
                         await showResultDialog(
                           context: context,
                           success: true,
-                          title: "Account Created",
-                          message:
-                              "We've sent a verification email to your inbox. Please verify your email before signing in.",
+                          title: "account_created".tr(),
+                          message: "account_created_successfully".tr(),
                         );
                       }
                     } catch (e) {
@@ -1333,7 +1332,7 @@ class _SettingsState extends State<Settings> {
                         await showResultDialog(
                           context: context,
                           success: false,
-                          title: "Registration Failed",
+                          title: "registration_failed".tr(),
                           message: e.toString(),
                         );
                       }

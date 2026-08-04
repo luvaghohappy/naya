@@ -292,7 +292,15 @@
   "personalize_naya": "Personnalisez Naya, enregistrez l'historique de vos conversations, synchronisez vos préférences et faites de Naya un véritable compagnon à vos côtés.",
 
    "user_not_logged_in": "L'utilisateur n'est pas connecté.",
-  "user_not_authenticated": "L'utilisateur n'est pas authentifié."
+  "user_not_authenticated": "L'utilisateur n'est pas authentifié.",
+
+   "missing_information": "Informations manquantes",
+  "please_enter_email_password": "Veuillez saisir votre adresse e-mail et votre mot de passe.",
+
+  "account_created": "Compte créé",
+  "account_created_successfully": "Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter à Naya.",
+
+  "registration_failed": "Échec de l'inscription"
 
 
 

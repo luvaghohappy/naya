@@ -287,8 +287,16 @@
   "achievements": "Achievements",
   "achievements_description": "Milestones you've unlocked through using Naya",
   
-  "personalize_naya": "Personalize Naya, save your conversation history, sync preferences and make Naya feel more like your companion."
+  "personalize_naya": "Personalize Naya, save your conversation history, sync preferences and make Naya feel more like your companion.",
 
+  
+  "missing_information": "Missing Information",
+  "please_enter_email_password": "Please enter your email and password.",
+
+  "account_created": "Account Created",
+  "account_created_successfully": "Your account has been created successfully. You can now sign in to Naya.",
+
+  "registration_failed": "Registration Failed"
 
 
 }
