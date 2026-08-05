@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:naya/Mainpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,6 +39,10 @@ class _SettingsState extends State<Settings> {
 
   bool isCreatingAccount = false;
 
+  bool _obscurePassword = true;
+
+  late final StreamSubscription<AuthState> authSubscription;
+
   String getLanguageName() {
     switch (currentLanguage) {
       case "fr":
@@ -54,41 +59,62 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
+
     loadLanguage();
 
     loadUserData();
 
-    Supabase.instance.client.auth.onAuthStateChange.listen((data) async {
-      final session = data.session;
-      final user = session?.user;
+    authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
+      data,
+    ) async {
+      final user = data.session?.user;
 
-      if (user == null) return;
+      print("========== AUTH EVENT ==========");
+      print("Event : ${data.event}");
+      print("User  : ${user?.email}");
+      print("ID    : ${user?.id}");
+      print("================================");
 
-      try {
-        final nickname = await getNickname();
+      if (user != null) {
+        await _syncUser(user);
+      }
 
-        await Supabase.instance.client.from('UsersTable').upsert({
-          'id': user.id,
-          'email': user.email,
-          'nickname': nickname,
-          'avatar_url': null,
-        });
-
-        final prefs = await SharedPreferences.getInstance();
-
-        await prefs.setBool("isLoggedIn", true);
-        await prefs.setString("email", user.email ?? "");
-
-        if (mounted) {
-          loadUserData();
-        }
-        print("AUTH USER ID = ${user.id}");
-
-        print("INSERT SUCCESS");
-      } catch (e) {
-        print("INSERT ERROR: $e");
+      if (mounted) {
+        await loadUserData();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    authSubscription.cancel();
+    super.dispose();
+  }
+
+  Future<void> _syncUser(User user) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final nickname =
+          prefs.getString("nickname") ??
+          user.userMetadata?["full_name"] ??
+          "Friend";
+
+      await Supabase.instance.client.from("UsersTable").upsert({
+        "id": user.id,
+        "email": user.email,
+        "nickname": nickname,
+        "avatar_url": user.userMetadata?["avatar_url"],
+      });
+
+      await prefs.setBool("isLoggedIn", true);
+      await prefs.setString("email", user.email ?? "");
+
+      print("USER SYNCHRONIZED");
+    } catch (e) {
+      print("SYNC ERROR");
+      print(e);
+    }
   }
 
   ///GET LANGUAGE
@@ -160,29 +186,18 @@ class _SettingsState extends State<Settings> {
     final authUser = Supabase.instance.client.auth.currentUser;
 
     String nickname = prefs.getString("nickname") ?? "Friend";
-    String avatarUrl = authUser?.userMetadata?['avatar_url'] ?? "";
     String email = authUser?.email ?? "";
 
     if (authUser != null) {
-      try {
-        final data = await Supabase.instance.client
-            .from("UsersTable")
-            .select()
-            .eq("id", authUser.id)
-            .maybeSingle();
+      final data = await Supabase.instance.client
+          .from("UsersTable")
+          .select()
+          .eq("id", authUser.id)
+          .maybeSingle();
 
-        if (data != null) {
-          nickname = data["nickname"] ?? nickname;
-
-          if (data != null) {
-            avatarUrl = data["avatar_url"] ?? avatarUrl;
-          }
-
-          // Prefer the email from UsersTable if it exists
-          email = data["email"] ?? email;
-        }
-      } catch (e) {
-        debugPrint("Couldn't load UsersTable profile: $e");
+      if (data != null) {
+        nickname = data["nickname"] ?? nickname;
+        email = data["email"] ?? email;
       }
     }
 
@@ -220,23 +235,25 @@ class _SettingsState extends State<Settings> {
   ///----------Email Sign in------------
 
   Future<void> signInWithEmail() async {
-    if (emailController.text.trim().isEmpty ||
-        passwordController.text.trim().isEmpty) {
-      await showResultDialog(
-        context: context,
-        success: false,
-        title: "missing_information".tr(),
-        message: "please_enter_email_password".tr(),
-      );
-      return;
-    }
-
     try {
-      await Supabase.instance.client.auth.signInWithPassword(
+      final response = await Supabase.instance.client.auth.signInWithPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-    } catch (e) {}
+
+      print("========== LOGIN ==========");
+      print("User: ${response.user}");
+      print("ID: ${response.user?.id}");
+      print("Email: ${response.user?.email}");
+      print("===========================");
+    } catch (e) {
+      await showResultDialog(
+        context: context,
+        success: false,
+        title: "Login failed",
+        message: e.toString(),
+      );
+    }
   }
 
   //Dialog result
@@ -459,7 +476,7 @@ class _SettingsState extends State<Settings> {
                       const SizedBox(height: 14),
 
                       Text(
-                        "Create an account",
+                        "create_your_account".tr(),
                         textAlign: TextAlign.center,
 
                         style: TextStyle(
@@ -493,8 +510,7 @@ class _SettingsState extends State<Settings> {
                           /// EMAIL BUTTON
                           Expanded(
                             child: GestureDetector(
-                              onTap: () async {
-                                await signInWithEmail();
+                              onTap: () {
                                 showDialog(
                                   context: context,
                                   barrierDismissible: true,
@@ -629,18 +645,6 @@ class _SettingsState extends State<Settings> {
 
                   child: Column(
                     children: [
-                      // buildTile(
-                      //   icon: Icons.history_rounded,
-                      //   title: "conversation_history".tr(),
-                      // ),
-
-                      // const Divider(),
-
-                      // buildTile(
-                      //   icon: Icons.graphic_eq_rounded,
-                      //   title: "voice_preferences".tr(),
-                      // ),
-
                       // const Divider(),
                       GestureDetector(
                         onTap: logout,
@@ -1287,17 +1291,29 @@ class _SettingsState extends State<Settings> {
                     /// PASSWORD
                     TextField(
                       controller: passwordController,
-                      obscureText: true,
+                      obscureText: _obscurePassword,
                       autofillHints: const [AutofillHints.newPassword],
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Theme.of(context).colorScheme.surface,
                         hintText: "create_password".tr(),
+                        helperText: "password_min".tr(),
                         prefixIcon: const Icon(
                           Icons.lock_outline_rounded,
                           color: Color(0xFF8B5CF6),
                         ),
-                        suffixIcon: const Icon(Icons.visibility_off_outlined),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(22),
                           borderSide: BorderSide.none,
@@ -1318,9 +1334,34 @@ class _SettingsState extends State<Settings> {
                   onPressed: () async {
                     if (isCreatingAccount) return;
 
-                    if (nicknameController.text.trim().isEmpty ||
-                        emailController.text.trim().isEmpty ||
-                        passwordController.text.trim().isEmpty) {
+                    final nickname = nicknameController.text.trim();
+                    final email = emailController.text.trim();
+                    final password = passwordController.text.trim();
+
+                    if (nickname.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("please_enter_nickname".tr())),
+                      );
+                      return;
+                    }
+
+                    if (email.isEmpty || !email.contains('@')) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("please_enter_valid_email".tr()),
+                        ),
+                      );
+                      return;
+                    }
+
+                    if (password.length < 8) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("password_min_length".tr())),
+                      );
+                      return;
+                    }
+
+                    if (nickname.isEmpty || email.isEmpty || password.isEmpty) {
                       await showResultDialog(
                         context: context,
                         success: false,
@@ -1335,35 +1376,33 @@ class _SettingsState extends State<Settings> {
                     try {
                       final prefs = await SharedPreferences.getInstance();
 
-                      await prefs.setString(
-                        "nickname",
-                        nicknameController.text.trim(),
+                      await prefs.setString("nickname", nickname);
+
+                      final response = await Supabase.instance.client.auth
+                          .signUp(email: email, password: password);
+
+                      print("SIGN UP USER = ${response.user}");
+                      print("SESSION      = ${response.session}");
+
+                      if (!context.mounted) return;
+
+                      Navigator.pop(context);
+
+                      await showResultDialog(
+                        context: context,
+                        success: true,
+                        title: "account_created".tr(),
+                        message: "account_created_successfully".tr(),
                       );
-
-                      await Supabase.instance.client.auth.signUp(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                      );
-
-                      if (context.mounted) {
-                        Navigator.pop(context);
-
-                        await showResultDialog(
-                          context: context,
-                          success: true,
-                          title: "account_created".tr(),
-                          message: "account_created_successfully".tr(),
-                        );
-                      }
                     } catch (e) {
-                      if (context.mounted) {
-                        await showResultDialog(
-                          context: context,
-                          success: false,
-                          title: "registration_failed".tr(),
-                          message: e.toString(),
-                        );
-                      }
+                      if (!context.mounted) return;
+
+                      await showResultDialog(
+                        context: context,
+                        success: false,
+                        title: "registration_failed".tr(),
+                        message: e.toString(),
+                      );
                     } finally {
                       if (mounted) {
                         setState(() => isCreatingAccount = false);

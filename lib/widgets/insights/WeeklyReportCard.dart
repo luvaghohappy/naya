@@ -24,7 +24,7 @@ class WeeklyReportCard extends StatefulWidget {
 class _WeeklyReportCardState extends State<WeeklyReportCard> {
   late Future<ReportModel> future;
 
-    late final StreamSubscription<AuthState> authSubscription;
+  late final StreamSubscription<AuthState> authSubscription;
 
   @override
   void initState() {
@@ -32,16 +32,18 @@ class _WeeklyReportCardState extends State<WeeklyReportCard> {
     future = ReportService().loadReport(widget.period, widget.selectedDate);
     refresh();
 
-     authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((_) {
-    refresh();
-  });
+    authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
+      _,
+    ) {
+      refresh();
+    });
   }
 
   @override
-void dispose() {
-  authSubscription.cancel();
-  super.dispose();
-}
+  void dispose() {
+    authSubscription.cancel();
+    super.dispose();
+  }
 
   Future<void> refresh() async {
     if (!mounted) return;

@@ -296,7 +296,13 @@
   "account_created": "Account Created",
   "account_created_successfully": "Your account has been created successfully. You can now sign in to Naya.",
 
-  "registration_failed": "Registration Failed"
+  "registration_failed": "Registration Failed",
+
+  "password_min": "Password must be at least 8 characters.",
+
+   "please_enter_nickname": "Please enter a nickname.",
+  "please_enter_valid_email": "Please enter a valid email address.",
+  "password_min_length": "Password must contain at least 8 characters."
 
 
 }

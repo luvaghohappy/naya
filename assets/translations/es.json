@@ -301,7 +301,13 @@
   "account_created": "Cuenta creada",
   "account_created_successfully": "Tu cuenta se ha creado correctamente. Ahora puedes iniciar sesión en Naya.",
 
-  "registration_failed": "Error en el registro"
+  "registration_failed": "Error en el registro",
+
+  "password_min_8": "La contraseña debe tener al menos 8 caracteres.",
+
+   "please_enter_nickname": "Por favor, introduzca un apodo.",
+  "please_enter_valid_email": "Por favor, introduzca una dirección de correo electrónico válida.",
+  "password_min_length": "La contraseña debe contener al menos 8 caracteres."
 
 
   

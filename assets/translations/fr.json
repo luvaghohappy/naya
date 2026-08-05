@@ -300,7 +300,13 @@
   "account_created": "Compte créé",
   "account_created_successfully": "Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter à Naya.",
 
-  "registration_failed": "Échec de l'inscription"
+  "registration_failed": "Échec de l'inscription",
+
+  "password_min_8": "Le mot de passe doit contenir au moins 8 caractères.",
+
+  "please_enter_nickname": "Veuillez entrer un pseudo.",
+  "please_enter_valid_email": "Veuillez entrer une adresse e-mail valide.",
+  "password_min_length": "Le mot de passe doit contenir au moins 8 caractères."
 
 
 
